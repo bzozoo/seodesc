@@ -3,7 +3,7 @@
     "type": "phpbb-extension",
     "description": "SEO Meta description. Index cat, viewforum desc and viewtopic text",
     "homepage": "http://phpbbguru.net",
-    "version": "0.0.2",
+    "version": "1.0.0",
     "time": "2015-01-11",
     "license": "GPL-2.0",
     "authors": [
@@ -23,3 +23,4 @@
         }
     }
 }
+
