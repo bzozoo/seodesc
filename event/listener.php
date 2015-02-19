@@ -40,7 +40,7 @@ class listener implements EventSubscriberInterface
 		$forum_rows = $event['forum_rows'];
 		foreach ($forum_rows as $row)
 		{
-			/** Исключаем названия категорий */
+			/** No forum type category */
 			if ($row['forum_type'] != FORUM_CAT)
 			{
 				$forum_desc .= ($forum_desc) ? ', ' . $row['forum_name'] : $row['forum_name'];
@@ -48,9 +48,9 @@ class listener implements EventSubscriberInterface
 		}
 		if ($forum_desc)
 		{
-			if (mb_strlen($forum_desc) > listener::MAX_LENGHT)
+			if (mb_strlen($forum_desc) > self::MAX_LENGHT)
 			{
-				$forum_desc = mb_substr($forum_desc, 0, listener::MAX_LENGHT) . '..';
+				$forum_desc = mb_substr($forum_desc, 0, self::MAX_LENGHT) . '..';
 			}
 			$this->template->assign_var('DESCRIPTION', trim($forum_desc));
 		}
@@ -62,9 +62,9 @@ class listener implements EventSubscriberInterface
 		if (!empty($forum_data['forum_desc']))
 		{
 			$forum_desc = $this->strip_code($forum_data['forum_desc']);
-			if (mb_strlen($forum_desc) > listener::MAX_LENGHT)
+			if (mb_strlen($forum_desc) > self::MAX_LENGHT)
 			{
-				$forum_desc = mb_substr($forum_desc, 0, listener::MAX_LENGHT) . '..';
+				$forum_desc = mb_substr($forum_desc, 0, self::MAX_LENGHT) . '..';
 			}
 			$this->template->assign_var('DESCRIPTION', trim($forum_desc));
 		}
@@ -88,10 +88,10 @@ class listener implements EventSubscriberInterface
 			unset($rowset[$post_list[$i]]);
 			break;
 		}
-		// Если много, режем.
-		if (mb_strlen($topic_desc) >= listener::MAX_LENGHT)
+		// Limit chars
+		if (mb_strlen($topic_desc) >= self::MAX_LENGHT)
 		{
-			$topic_desc = mb_substr($topic_desc, 0, listener::MAX_LENGHT) . '..';
+			$topic_desc = mb_substr($topic_desc, 0, self::MAX_LENGHT) . '..';
 		}
 		$this->template->assign_var('DESCRIPTION', trim($topic_desc));
 	}
