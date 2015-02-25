@@ -4,7 +4,7 @@
     "description": "SEO Meta description. Index cat, viewforum desc and viewtopic text",
     "homepage": "http://phpbbguru.net",
     "version": "1.0.0",
-    "time": "2015-01-11",
+    "time": "2014-10-23",
     "license": "GPL-2.0",
     "authors": [
         {
@@ -17,10 +17,9 @@
         "php": ">=5.3.3"
     },
     "extra": {
-        "display-name": "Seo Meta Description",
+        "display-name": "SEO meta description",
         "soft-require": {
             "phpbb/phpbb": "3.1.*@dev"
         }
     }
 }
-
