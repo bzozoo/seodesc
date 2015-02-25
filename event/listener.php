@@ -14,14 +14,18 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class listener implements EventSubscriberInterface
 {
-
+	/** @var \phpbb\template\template */
 	protected $template;
+
+	/** @var \phpbb\config\config */
+	protected $config;
 
 	const MAX_LENGHT = 250;
 
-	public function __construct(\phpbb\template\template $template)
+	public function __construct(\phpbb\template\template $template, \phpbb\config\config $config)
 	{
 		$this->template = $template;
+		$this->config = $config;
 	}
 
 	static public function getSubscribedEvents()
@@ -35,24 +39,31 @@ class listener implements EventSubscriberInterface
 
 	public function forumlist_description($event)
 	{
-		$forum_desc = '';
-		$row = $event['row'];
-		$forum_rows = $event['forum_rows'];
-		foreach ($forum_rows as $row)
+		if ($this->config['meta_description'])
 		{
-			/** No forum type category */
-			if ($row['forum_type'] != FORUM_CAT)
-			{
-				$forum_desc .= ($forum_desc) ? ', ' . $row['forum_name'] : $row['forum_name'];
-			}
+			$this->template->assign_var('DESCRIPTION', $this->config['meta_description']);
 		}
-		if ($forum_desc)
+		else
 		{
-			if (mb_strlen($forum_desc) > self::MAX_LENGHT)
+			$forum_desc = '';
+			$row = $event['row'];
+			$forum_rows = $event['forum_rows'];
+			foreach ($forum_rows as $row)
 			{
-				$forum_desc = mb_substr($forum_desc, 0, self::MAX_LENGHT) . '..';
+				/** No forum type category */
+				if ($row['forum_type'] != FORUM_CAT)
+				{
+					$forum_desc .= ($forum_desc) ? ', ' . $row['forum_name'] : $row['forum_name'];
+				}
 			}
-			$this->template->assign_var('DESCRIPTION', trim($forum_desc));
+			if ($forum_desc)
+			{
+				if (mb_strlen($forum_desc) > self::MAX_LENGHT)
+				{
+					$forum_desc = mb_substr($forum_desc, 0, self::MAX_LENGHT) . '..';
+				}
+				$this->template->assign_var('DESCRIPTION', trim($forum_desc));
+			}
 		}
 	}
 
