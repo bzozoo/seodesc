@@ -3,5 +3,10 @@ services:
         class: bb3mobi\seodesc\event\listener
         arguments:
             - @template
+            - @config
+        tags:
+            - { name: event.listener }
+    bb3mobi.seodesc.acp_listener:
+        class: bb3mobi\seodesc\event\acp_listener
         tags:
             - { name: event.listener }
