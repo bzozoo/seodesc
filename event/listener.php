@@ -21,6 +21,7 @@ class listener implements EventSubscriberInterface
 	protected $config;
 
 	const MAX_LENGHT = 250;
+	const MAX_LENGHT_SHORTER = 170;
 
 	public function __construct(\phpbb\template\template $template, \phpbb\config\config $config)
 	{
@@ -84,6 +85,7 @@ class listener implements EventSubscriberInterface
 	public function viewtopic_description($event)
 	{
 		$topic_desc = '';
+		$topic_desc2 = '';
 		$rowset = $event['rowset'];
 		$post_list = $event['post_list'];
 		for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
@@ -96,15 +98,23 @@ class listener implements EventSubscriberInterface
 			}
 			$row = $rowset[$post_list[$i]];
 			$topic_desc = $this->strip_code($row['post_text']);
+			$topic_desc2 = $this->strip_code($row['post_text']);
 			unset($rowset[$post_list[$i]]);
 			break;
 		}
-		// Limit chars
+		// Limit chars 250
 		if (mb_strlen($topic_desc) >= self::MAX_LENGHT)
 		{
 			$topic_desc = mb_substr($topic_desc, 0, self::MAX_LENGHT) . '..';
 		}
 		$this->template->assign_var('DESCRIPTION', trim($topic_desc));
+		
+		// Limit chars 170 for twitter card
+		if (mb_strlen($topic_desc2) >= self::MAX_LENGHT_SHORTER)
+		{
+			$topic_desc2 = mb_substr($topic_desc2, 0, self::MAX_LENGHT_SHORTER) . '..';
+		}
+		$this->template->assign_var('TWITTDESCRIPTION', trim($topic_desc2));
 	}
 
 	private function strip_code($text)
