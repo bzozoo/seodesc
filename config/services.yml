@@ -2,8 +2,8 @@ services:
     bb3mobi.seodesc.listener:
         class: bb3mobi\seodesc\event\listener
         arguments:
-            - @template
-            - @config
+            - '@template'
+            - '@config'
         tags:
             - { name: event.listener }
     bb3mobi.seodesc.acp_listener:
